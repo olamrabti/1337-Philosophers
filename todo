@@ -1,0 +1,13 @@
+// [ ] check that the input contains only numbers, they should all be bigger than 0 ,
+    // except the number of meals each philo needs to eat (edge case). 
+// [ ] In the evaluation form, it says we should not test with more than 200 philos
+    // so you can set the limit not to be more than 200.
+
+
+    nl unset ""
+    ls file 
+    cat makefile > ls 
+    unset all 
+    export all
+    echo $zsh
+    isatty to add
