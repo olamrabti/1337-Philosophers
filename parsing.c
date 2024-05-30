@@ -6,7 +6,7 @@
 /*   By: olamrabt <olamrabt@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/28 15:42:11 by olamrabt          #+#    #+#             */
-/*   Updated: 2024/05/29 16:45:06 by olamrabt         ###   ########.fr       */
+/*   Updated: 2024/05/29 20:16:36 by olamrabt         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,11 +44,10 @@ int	ft_atoi(const char *str)
 		num = num * 10 + *str - 48;
 		str++;
 	}
-	if (*str)
+	if (*str) // or maybe i wont need it 
 		return -1;
 	return ((int)(num * sign));
 }
-
 
 int parse_args(t_monitor *monitor, char **av, int ac)
 {

@@ -6,7 +6,7 @@
 /*   By: olamrabt <olamrabt@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/28 12:14:49 by olamrabt          #+#    #+#             */
-/*   Updated: 2024/05/29 18:19:27 by olamrabt         ###   ########.fr       */
+/*   Updated: 2024/05/30 15:49:24 by olamrabt         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,23 +32,44 @@ typedef struct monitor
     size_t time_to_sleep;
     size_t start_time;
     int eat_limit;
-    int full_philos; // once full philos  == philos number break 
-    int end_simulation; // flag to stop the program if one philo died or all philos are full
+    size_t full_philos;
+    int end_simulation;
+    int is_ready_flag;
+    pthread_mutex_t *forks;
+    pthread_mutex_t print;
+    pthread_mutex_t is_ready;
+    pthread_t monitor_thread;
+    struct philo *philos;
 } t_monitor;
 
 typedef struct philo
 {
-    size_t id; // will be usefull to check odd philos
-    size_t last_meal; // to determine if he's dead 
+    size_t id;
+    size_t last_meal;
     int dead;
-    int eaten_meals; // to stop eating if reached the limit
+    int eaten_meals;
     pthread_mutex_t *left_fork;
     pthread_mutex_t *right_fork;
-    pthread_t		thread; // every philo is a thread
+    pthread_t thread;
     t_monitor *monitor;
 } t_philo;
 
-int parse_args(t_monitor *monitor, char **av, int ac);
+typedef struct s_addr
+{
+	void				*address;
+	struct s_addr		*nxt;
+}	t_addr;
 
+void	*ft_calloc(t_addr **addr, size_t count, size_t size);
+t_addr	*new_addr(char *value);
+int	add_addr(t_addr **list, t_addr *new);
+void	ft_lstclear(t_addr **lst, void (*del)(void *));
+
+
+int parse_args(t_monitor *monitor, char **av, int ac);
+void *monitor_work(void *arg);
+void *start_simulation(void *arg);
+int create_philosophers(t_monitor *monitor, t_addr **addr);
+long get_current_time_ms();
 
 #endif

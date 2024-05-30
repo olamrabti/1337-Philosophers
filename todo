@@ -4,10 +4,7 @@
     // so you can set the limit not to be more than 200.
 
 
-    nl unset ""
-    ls file 
-    cat makefile > ls 
-    unset all 
-    export all
-    echo $zsh
-    isatty to add
+
+// add mutex for printing 
+// add mutex for is_ready , dont start until is is_ready
+// 
