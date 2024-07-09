@@ -6,17 +6,16 @@
 #    By: olamrabt <olamrabt@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/05/28 13:28:42 by olamrabt          #+#    #+#              #
-#    Updated: 2024/05/30 14:49:40 by olamrabt         ###   ########.fr        #
+#    Updated: 2024/07/09 11:54:32 by olamrabt         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 CC = cc
 
-CFLAGS = -Wall -Wextra -Werror -g -fsanitize=address
+CFLAGS = -Wall -Wextra -Werror -g -fsanitize=thread
+NAME = philo
 
-NAME = philosophers
-
-SRCS = philo.c parsing.c monitor.c simulation.c address_collector.c address_collector_utils.c
+SRCS = philo.c parsing.c simulation.c address_collector.c address_collector_utils.c utils.c getters_setters.c
 
 OBJS = $(SRCS:.c=.o)
 

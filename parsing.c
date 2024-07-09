@@ -6,7 +6,7 @@
 /*   By: olamrabt <olamrabt@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/28 15:42:11 by olamrabt          #+#    #+#             */
-/*   Updated: 2024/05/29 20:16:36 by olamrabt         ###   ########.fr       */
+/*   Updated: 2024/07/08 16:45:41 by olamrabt         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,22 +44,22 @@ int	ft_atoi(const char *str)
 		num = num * 10 + *str - 48;
 		str++;
 	}
-	if (*str) // or maybe i wont need it 
+	if (*str)
 		return -1;
 	return ((int)(num * sign));
 }
 
-int parse_args(t_monitor *monitor, char **av, int ac)
+int parse_args(t_dinner *dinner, char **av, int ac)
 {
     int temp;
 
     temp = -3;
-    monitor->eat_limit = -1;
-    if (ac == 6)
+	dinner->eat_limit = -1;
+	if (ac == 6)
     {
-        monitor->eat_limit = ft_atoi(av[5]);
-        if (monitor->eat_limit < 0)
-            return printf("%s is not a valid parameter\n", av[5]), FAILURE;
+		dinner->eat_limit = ft_atoi(av[5]);
+		if (dinner->eat_limit < 0)
+			return printf("%s is not a valid parameter\n", av[5]), FAILURE;
     }
     while (--ac > 0)
     {
@@ -67,12 +67,10 @@ int parse_args(t_monitor *monitor, char **av, int ac)
         if (temp < 0)
             return printf("%s is not a valid parameter\n", av[ac]), FAILURE;
     }
-    monitor->number_of_philos = ft_atoi(av[1]);
-    monitor->full_philos = -1 * ft_atoi(av[1]);
-    monitor->time_to_die = ft_atoi(av[2]) * 1000;
-    monitor->time_to_eat = ft_atoi(av[3]) * 1000;
-    monitor->time_to_sleep = ft_atoi(av[4]) * 1000;
-    monitor->end_simulation = 0;
-    monitor->start_time = 0; //gettimeofday
-    return SUCCESS;
+	dinner->number_of_philos = ft_atoi(av[1]);
+	dinner->time_to_die = ft_atoi(av[2]);
+	dinner->time_to_eat = ft_atoi(av[3]);
+	dinner->time_to_sleep = ft_atoi(av[4]);
+	dinner->start_time = 0;
+	return SUCCESS;
 }
