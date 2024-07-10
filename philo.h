@@ -6,7 +6,7 @@
 /*   By: olamrabt <olamrabt@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/28 12:14:49 by olamrabt          #+#    #+#             */
-/*   Updated: 2024/07/09 12:19:30 by olamrabt         ###   ########.fr       */
+/*   Updated: 2024/07/10 15:46:51 by olamrabt         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@
 # define FAILURE 1;
 # define SUCCESS 0;
 
-typedef struct dinner
+typedef struct simulation
 {
     size_t number_of_philos;
     size_t time_to_die;
@@ -40,8 +40,9 @@ typedef struct dinner
     pthread_mutex_t read_mtx;
     pthread_mutex_t is_dead_mtx;
     pthread_mutex_t check_meals_mtx;
+    pthread_mutex_t full;
     struct philo *philos;
-} t_dinner;
+} t_simulation;
 
 typedef struct philo
 {
@@ -52,7 +53,7 @@ typedef struct philo
     pthread_mutex_t *right_fork;
     pthread_t thread;
     void *ret_val; // NOTE : leave it or remove it
-    t_dinner *dinner;
+    t_simulation *simulation;
 } t_philo;
 
 typedef struct s_addr
@@ -65,22 +66,24 @@ void	*ft_calloc(t_addr **addr, size_t count, size_t size);
 t_addr	*new_addr(char *value);
 int	add_addr(t_addr **list, t_addr *new);
 void	ft_lstclear(t_addr **lst, void (*del)(void *));
-int parse_args(t_dinner *dinner, char **av, int ac);
+int parse_args(t_simulation *simulation, char **av, int ac);
 void *start_simulation(void *arg);
-int create_philosophers(t_dinner *dinner, t_addr **addr);
+int create_philosophers(t_simulation *simulation, t_addr **addr);
 size_t get_time_ms();
-int ft_init(t_dinner *dinner, t_addr **addr);
+int ft_init(t_simulation *simulation, t_addr **addr);
 void print_philosopher(t_philo *philo);
 int print_exit(char *msg, t_addr **addr);
-// int is_ready(t_dinner *dinner);
-void yes_is_ready(t_dinner *dinner);
-void ft_monitor(t_dinner *dinner);
-void print_params(t_dinner *dinner);
+// int is_ready(t_simulation *simulation);
+void yes_is_ready(t_simulation *simulation);
+void ft_monitor(t_simulation *simulation);
+void print_params(t_simulation *simulation);
 int someone_is_dead(t_philo *philo);
 int get_eaten_meals(t_philo *philo);
 void incr_eaten_meals(t_philo *philo);
-void declare_someone_is_dead(t_dinner *dinner);
-int philos_are_full(t_dinner *dinner);
-void declare_philos_are_full(t_dinner *dinner);
+void declare_someone_is_dead(t_simulation *simulation);
+int philos_are_full(t_simulation *simulation);
+void declare_philos_are_full(t_simulation *simulation);
+
+int ft_all_full(t_philo *philo);
 
 #endif
