@@ -6,7 +6,7 @@
 /*   By: olamrabt <olamrabt@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/28 12:14:49 by olamrabt          #+#    #+#             */
-/*   Updated: 2024/07/10 15:46:51 by olamrabt         ###   ########.fr       */
+/*   Updated: 2024/07/11 14:52:56 by olamrabt         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,17 +73,13 @@ size_t get_time_ms();
 int ft_init(t_simulation *simulation, t_addr **addr);
 void print_philosopher(t_philo *philo);
 int print_exit(char *msg, t_addr **addr);
-// int is_ready(t_simulation *simulation);
-void yes_is_ready(t_simulation *simulation);
 void ft_monitor(t_simulation *simulation);
-void print_params(t_simulation *simulation);
 int someone_is_dead(t_philo *philo);
-int get_eaten_meals(t_philo *philo);
 void incr_eaten_meals(t_philo *philo);
 void declare_someone_is_dead(t_simulation *simulation);
 int philos_are_full(t_simulation *simulation);
 void declare_philos_are_full(t_simulation *simulation);
-
+int raised_flags(t_philo *philo);
 int ft_all_full(t_philo *philo);
 
 #endif

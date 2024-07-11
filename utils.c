@@ -6,7 +6,7 @@
 /*   By: olamrabt <olamrabt@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/31 10:39:11 by olamrabt          #+#    #+#             */
-/*   Updated: 2024/07/10 15:34:28 by olamrabt         ###   ########.fr       */
+/*   Updated: 2024/07/11 15:07:34 by olamrabt         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,9 +41,8 @@ int ft_init(t_simulation *simulation, t_addr **addr)
 size_t get_time_ms()
 {
     struct timeval tv;
-    // should it have a mutex ?
-
-    gettimeofday(&tv, NULL);
+    if (gettimeofday(&tv, NULL) == -1)
+        return 0;
     return (tv.tv_sec * 1000) + (tv.tv_usec / 1000);
 }
 
@@ -54,21 +53,12 @@ void print_philosopher(t_philo *philo)
            philo->id, philo->last_meal, philo->eaten_meals);
     pthread_mutex_unlock(&philo->simulation->is_dead_mtx);
 }
+
 int print_exit(char *msg, t_addr **addr)
 {
-    printf("%s\n", msg);
+    if (msg)
+        printf("%s\n", msg);
     ft_lstclear(addr, free);
     return FAILURE;
 }
-
-// int is_ready(t_simulation *simulation)
-// {
-//     pthread_mutex_lock(&simulation->read_mtx);
-//     return simulation->is_ready_flag;
-// }
-void yes_is_ready(t_simulation *simulation)
-{
-    pthread_mutex_lock(&simulation->read_mtx);
-    simulation->start_time = get_time_ms();
-    pthread_mutex_unlock(&simulation->read_mtx);
-}
+ 

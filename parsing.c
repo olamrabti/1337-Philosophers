@@ -6,7 +6,7 @@
 /*   By: olamrabt <olamrabt@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/28 15:42:11 by olamrabt          #+#    #+#             */
-/*   Updated: 2024/07/10 11:10:17 by olamrabt         ###   ########.fr       */
+/*   Updated: 2024/07/11 14:48:09 by olamrabt         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,11 +56,11 @@ int parse_args(t_simulation *simulation, char **av, int ac)
     temp = -3;
 	simulation->eat_limit = -1;
 	if (ac == 6)
-    {
+	{
 		simulation->eat_limit = ft_atoi(av[5]);
 		if (simulation->eat_limit < 0)
 			return printf("%s is not a valid parameter\n", av[5]), FAILURE;
-    }
+	}
     while (--ac > 0)
     {
         temp = ft_atoi(av[ac]);
