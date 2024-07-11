@@ -1,43 +1,17 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   utils.c                                            :+:      :+:    :+:   */
+/*   init_utils.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: olamrabt <olamrabt@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/31 10:39:11 by olamrabt          #+#    #+#             */
-/*   Updated: 2024/07/11 15:07:34 by olamrabt         ###   ########.fr       */
+/*   Updated: 2024/07/11 17:10:40 by olamrabt         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
 
-int ft_init(t_simulation *simulation, t_addr **addr)
-{
-    size_t i;
-
-    simulation->forks = ft_calloc(addr, simulation->number_of_philos, sizeof(pthread_mutex_t));
-    simulation->dead_philo = 0;
-    simulation->full_philos = 0;
-    simulation->all_full = 0;
-    if (simulation->forks == NULL)
-        return FAILURE;
-    i = 0;
-    while (i < simulation->number_of_philos)
-        if (pthread_mutex_init(&simulation->forks[i++], NULL))
-            return FAILURE;
-    if (pthread_mutex_init(&simulation->print_mtx, NULL))
-        return FAILURE;
-    if (pthread_mutex_init(&simulation->full, NULL))
-        return FAILURE;
-    if (pthread_mutex_init(&simulation->read_mtx, NULL))
-        return FAILURE;
-    if (pthread_mutex_init(&simulation->is_dead_mtx, NULL))
-        return FAILURE;
-    if (pthread_mutex_init(&simulation->check_meals_mtx, NULL))
-        return FAILURE;
-    return SUCCESS;
-}
 size_t get_time_ms()
 {
     struct timeval tv;
@@ -46,19 +20,50 @@ size_t get_time_ms()
     return (tv.tv_sec * 1000) + (tv.tv_usec / 1000);
 }
 
-void print_philosopher(t_philo *philo)
+void ft_usleep(size_t time, t_philo *philo)
 {
-    pthread_mutex_lock(&philo->simulation->is_dead_mtx);
-    printf("\nPhilosopher %zu - Last Meal: %zu, Eaten Meals: %d\n",
-           philo->id, philo->last_meal, philo->eaten_meals);
-    pthread_mutex_unlock(&philo->simulation->is_dead_mtx);
+    size_t start_time;
+
+    start_time = get_time_ms();
+    while (get_time_ms() - start_time < time)
+    {
+        if (raised_flags(philo))
+            return;
+        usleep(500);
+    }
 }
 
-int print_exit(char *msg, t_addr **addr)
+int raised_flags(t_philo *philo)
 {
-    if (msg)
-        printf("%s\n", msg);
-    ft_lstclear(addr, free);
-    return FAILURE;
+    if (ft_all_full(philo))
+        return 1;
+    pthread_mutex_lock(&philo->simulation->is_dead_mtx);
+    if (philo->simulation->dead_philo)
+        return pthread_mutex_unlock(&philo->simulation->is_dead_mtx), 1;
+    pthread_mutex_unlock(&philo->simulation->is_dead_mtx);
+    return 0;
+}
+
+int ft_all_full(t_philo *philo)
+{
+    if (philo->simulation->eat_limit == -1)
+        return 0;
+    pthread_mutex_lock(&philo->simulation->full);
+    if (philo->simulation->all_full == 1)
+        return pthread_mutex_unlock(&philo->simulation->full), 1;
+    pthread_mutex_unlock(&philo->simulation->full);
+    return 0;
+}
+
+int someone_is_dead(t_philo *philo)
+{
+    pthread_mutex_lock(&philo->simulation->is_dead_mtx);
+    if (philo->simulation->dead_philo == 1)
+    {
+        pthread_mutex_unlock(&philo->simulation->is_dead_mtx);
+        return 1;
+    }
+    pthread_mutex_unlock(&philo->simulation->is_dead_mtx);
+    return 0;
 }
  

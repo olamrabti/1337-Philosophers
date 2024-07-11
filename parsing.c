@@ -6,7 +6,7 @@
 /*   By: olamrabt <olamrabt@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/28 15:42:11 by olamrabt          #+#    #+#             */
-/*   Updated: 2024/07/11 14:48:09 by olamrabt         ###   ########.fr       */
+/*   Updated: 2024/07/11 17:17:44 by olamrabt         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,6 +68,8 @@ int parse_args(t_simulation *simulation, char **av, int ac)
             return printf("%s is not a valid parameter\n", av[ac]), FAILURE;
     }
 	simulation->number_of_philos = ft_atoi(av[1]);
+	if (ft_atoi(av[1]) < 1)
+		return FAILURE;
 	simulation->time_to_die = ft_atoi(av[2]);
 	simulation->time_to_eat = ft_atoi(av[3]);
 	simulation->time_to_sleep = ft_atoi(av[4]);

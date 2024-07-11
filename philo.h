@@ -6,7 +6,7 @@
 /*   By: olamrabt <olamrabt@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/28 12:14:49 by olamrabt          #+#    #+#             */
-/*   Updated: 2024/07/11 14:52:56 by olamrabt         ###   ########.fr       */
+/*   Updated: 2024/07/11 17:12:47 by olamrabt         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@
 #include <unistd.h>
 #include <stdlib.h>
 #include <limits.h>
-#include <sys/time.h> // gettimeofday
+#include <sys/time.h>
 
 # define FAILURE 1;
 # define SUCCESS 0;
@@ -71,8 +71,9 @@ void *start_simulation(void *arg);
 int create_philosophers(t_simulation *simulation, t_addr **addr);
 size_t get_time_ms();
 int ft_init(t_simulation *simulation, t_addr **addr);
-void print_philosopher(t_philo *philo);
 int print_exit(char *msg, t_addr **addr);
+void print_turn(t_philo *philo, char *msg);
+void ft_usleep(size_t time, t_philo *philo);
 void ft_monitor(t_simulation *simulation);
 int someone_is_dead(t_philo *philo);
 void incr_eaten_meals(t_philo *philo);

@@ -7,3 +7,8 @@
 
 // add mutex for printing 
 // 
+
+
+
+// FIXME ./philo 0 100 200 300 should i print an error 
+    or just return without : fixed

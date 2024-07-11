@@ -6,11 +6,71 @@
 /*   By: olamrabt <olamrabt@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/28 13:28:14 by olamrabt          #+#    #+#             */
-/*   Updated: 2024/07/11 14:52:44 by olamrabt         ###   ########.fr       */
+/*   Updated: 2024/07/11 17:08:04 by olamrabt         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
+
+int print_exit(char *msg, t_addr **addr)
+{
+    if (msg)
+        printf("%s\n", msg);
+    ft_lstclear(addr, free);
+    return FAILURE;
+}
+
+int create_philosophers(t_simulation *simulation, t_addr **addr)
+{
+    size_t i;
+    simulation->philos = ft_calloc(addr, simulation->number_of_philos, sizeof(t_philo));
+    if (simulation->philos == NULL)
+        return FAILURE;
+    i = 0;
+    simulation->start_time = get_time_ms();
+    while (i < simulation->number_of_philos)
+    {
+        simulation->philos[i].id = i + 1;
+        simulation->philos[i].eaten_meals = 0;
+        simulation->philos[i].left_fork = &simulation->forks[i];
+        simulation->philos[i].right_fork = &simulation->forks[(i + 1) % simulation->number_of_philos];
+        simulation->philos[i].ret_val = 0;
+        simulation->philos[i].simulation = simulation;
+        simulation->philos[i].last_meal = get_time_ms();
+        if (pthread_create(&simulation->philos[i].thread, NULL, start_simulation, &simulation->philos[i]))
+            return FAILURE;
+
+        i++;
+    }
+    return SUCCESS;
+}
+
+int ft_init(t_simulation *simulation, t_addr **addr)
+{
+    size_t i;
+
+    simulation->forks = ft_calloc(addr, simulation->number_of_philos, sizeof(pthread_mutex_t));
+    simulation->dead_philo = 0;
+    simulation->full_philos = 0;
+    simulation->all_full = 0;
+    if (simulation->forks == NULL)
+        return FAILURE;
+    i = 0;
+    while (i < simulation->number_of_philos)
+        if (pthread_mutex_init(&simulation->forks[i++], NULL))
+            return FAILURE;
+    if (pthread_mutex_init(&simulation->print_mtx, NULL))
+        return FAILURE;
+    if (pthread_mutex_init(&simulation->full, NULL))
+        return FAILURE;
+    if (pthread_mutex_init(&simulation->read_mtx, NULL))
+        return FAILURE;
+    if (pthread_mutex_init(&simulation->is_dead_mtx, NULL))
+        return FAILURE;
+    if (pthread_mutex_init(&simulation->check_meals_mtx, NULL))
+        return FAILURE;
+    return SUCCESS;
+}
 
 void ft_clean(t_simulation *simulation)
 {
