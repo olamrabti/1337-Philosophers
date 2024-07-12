@@ -6,7 +6,7 @@
 /*   By: olamrabt <olamrabt@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/30 12:11:24 by olamrabt          #+#    #+#             */
-/*   Updated: 2024/05/30 12:11:40 by olamrabt         ###   ########.fr       */
+/*   Updated: 2024/07/12 09:26:45 by olamrabt         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,9 +34,10 @@ void	*ft_calloc(t_addr **addr, size_t count, size_t size)
 		return (NULL);
 	copy = (char *)malloc(count * size);
 	if (!copy)
-		exit(1);
+		return (NULL);
 	ft_bzero(copy, size * count);
-	add_addr(addr, new_addr(copy));
+	if (add_addr(addr, new_addr(copy)))
+		return (NULL);
 	return (copy);
 }
 
@@ -46,7 +47,7 @@ t_addr	*new_addr(char *value)
 
 	node = malloc(sizeof(t_addr));
 	if (!node)
-		exit(1);
+		return (NULL);
 	node->nxt = NULL;
 	node->address = value;
 	return (node);
