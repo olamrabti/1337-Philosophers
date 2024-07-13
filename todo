@@ -1,7 +1,8 @@
 
-// FIXME ./philo 0 100 200 300 should i print an error 
-    // or just return without : fixed
-    // timeval
+// FIXED ./philo 0 100 200 300 should i print an error 
+    // or just return without 
+// timeval
+// TODO test for last time before push 
 
 // void *start_simulation(void *arg)
 // {
@@ -31,3 +32,5 @@
 //     }
 //     return (NULL);
 // }
+
+//  ./philo 199 300 200 100

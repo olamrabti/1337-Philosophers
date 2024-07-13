@@ -6,11 +6,19 @@
 /*   By: olamrabt <olamrabt@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/30 12:11:24 by olamrabt          #+#    #+#             */
-/*   Updated: 2024/07/12 09:26:45 by olamrabt         ###   ########.fr       */
+/*   Updated: 2024/07/13 15:12:49 by olamrabt         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
+
+int	print_exit(char *msg, t_addr **addr)
+{
+	if (msg)
+		printf("%s\n", msg);
+	ft_lstclear(addr, free);
+	return (1);
+}
 
 static void	ft_bzero(void *s, size_t n)
 {

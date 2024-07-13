@@ -6,7 +6,7 @@
 /*   By: olamrabt <olamrabt@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/28 15:42:11 by olamrabt          #+#    #+#             */
-/*   Updated: 2024/07/12 10:04:34 by olamrabt         ###   ########.fr       */
+/*   Updated: 2024/07/13 14:39:01 by olamrabt         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,6 +37,8 @@ int	ft_atoi(const char *str)
 	if (*str == '-' || *str == '+')
 		if (*(str++) == '-')
 			sign = -1;
+	if (!(*str >= '0' && *str <= '9'))
+		return (-1);
 	while (*str >= '0' && *str <= '9')
 	{
 		if (ft_check_flow(sign, num, *str))
@@ -46,7 +48,7 @@ int	ft_atoi(const char *str)
 	}
 	if (*str)
 		return (-1);
-	return ((int)(num * sign));
+	return ((int)num * sign);
 }
 
 int	parse_args(t_simulation *simulation, char **av, int ac)

@@ -6,19 +6,11 @@
 /*   By: olamrabt <olamrabt@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/28 13:28:14 by olamrabt          #+#    #+#             */
-/*   Updated: 2024/07/12 10:12:51 by olamrabt         ###   ########.fr       */
+/*   Updated: 2024/07/13 15:15:12 by olamrabt         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
-
-int	print_exit(char *msg, t_addr **addr)
-{
-	if (msg)
-		printf("%s\n", msg);
-	ft_lstclear(addr, free);
-	return (1);
-}
 
 int	create_philosophers(t_simulation *simulation, t_addr **addr)
 {
@@ -75,7 +67,7 @@ int	ft_init(t_simulation *simulation, t_addr **addr)
 	return (0);
 }
 
-void	ft_clean(t_simulation *simulation)
+void	ft_join_all(t_simulation *simulation)
 {
 	size_t	i;
 
@@ -85,6 +77,12 @@ void	ft_clean(t_simulation *simulation)
 		pthread_join(simulation->philos[i].thread, NULL);
 		i++;
 	}
+}
+
+void	ft_destroy_mtxs(t_simulation *simulation)
+{
+	size_t	i;
+
 	i = 0;
 	while (i < simulation->number_of_philos)
 		pthread_mutex_destroy(&simulation->forks[i++]);
@@ -109,10 +107,13 @@ int	main(int ac, char **av)
 	if (parse_args(simulation, av, ac))
 		return (print_exit(NULL, &addr));
 	if (ft_init(simulation, &addr))
-		return (print_exit("Failed to initialize forks", &addr));
+		return (ft_destroy_mtxs(simulation), \
+		print_exit("Failed to initialize mutexes", &addr));
 	if (create_philosophers(simulation, &addr))
-		return (print_exit("Failed to create philosopher threads", &addr));
+		return (ft_join_all(simulation), \
+		print_exit("Failed to create philosopher threads", &addr));
 	ft_monitor(simulation);
-	ft_clean(simulation);
+	ft_join_all(simulation);
+	ft_destroy_mtxs(simulation);
 	return (print_exit(NULL, &addr), 0);
 }
